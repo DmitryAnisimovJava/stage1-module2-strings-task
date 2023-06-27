@@ -34,16 +34,16 @@ public class MethodParser {
     	String[] splitedString;
     	String argumentsInOneString;
     	if (MethodParser.hasMatchingAccessModifier(signatureString)) {
-			splitedString = signatureString.split("//W", 4);
+			splitedString = signatureString.split(" ", 3);
 			accessModifier = splitedString[0];
 			returnType = splitedString[1];
-			methodName = splitedString[2];
-			argumentsInOneString = splitedString[3];
+			methodName = splitedString[2].split("(")[0];
+			argumentsInOneString = splitedString[2].split("(")[1];
 		} else {
-			splitedString = signatureString.split("//W", 3);
+			splitedString = signatureString.split(" ", 2);
 			returnType = splitedString[0];
-			methodName = splitedString[1];
-			argumentsInOneString = splitedString[2];
+			methodName = splitedString[1].split("(")[0];
+			argumentsInOneString = splitedString[2].split("(")[1];
 		}
         String[] argumentString = argumentsInOneString.replaceAll(")", "").split(",");
         List<Argument> arguments = new ArrayList<>();
