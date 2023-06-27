@@ -1,5 +1,6 @@
 package com.epam.mjc;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -27,21 +28,35 @@ public class MethodParser {
      * @return {@link MethodSignature} object filled with parsed values from source string
      */
     public MethodSignature parseFunction(String signatureString) throws NullPointerException {
-    	StringTokenizer signatStringTokenizer = new StringTokenizer(signatureString, " ");
-    	String accessModifier;
+    	String accessModifier = null;
     	String returnType;
-    	if(signatStringTokenizer.countTokens() == 3) {
-    		accessModifier = signatStringTokenizer.nextToken();
-    		returnType = signatStringTokenizer.nextToken();
-    		String methodParamString = signatStringTokenizer.nextToken();
-    		String methodName = methodParamString[0];
-    		String[] argumentStrings = null;
-    		for(int i = 0; methodParamString.length < i-1;) {
-    			argumentStrings[i] = methodParamString[++i];
-    		}
-    		List<Argument> arguments= Arrays.asList(argumentStrings);
-    	}
-    	return new MethodParser();
+    	String methodName;
+    	String[] splitedString;
+    	String argumentsInOneString;
+    	if (MethodParser.hasMatchingAccessModifier(signatureString)) {
+			splitedString = signatureString.split("//W", 4);
+			accessModifier = splitedString[0];
+			returnType = splitedString[1];
+			methodName = splitedString[2];
+			argumentsInOneString = splitedString[3];
+		} else {
+			splitedString = signatureString.split("//W", 3);
+			returnType = splitedString[0];
+			methodName = splitedString[1];
+			argumentsInOneString = splitedString[2];
+		}
+        String[] argumentString = argumentsInOneString.replaceAll(")", "").split(",");
+        List<Argument> arguments = new ArrayList<>();
+    	for (int i = 0; i < argumentString.length - 1; i++) {
+    		String type = argumentString[i].trim().split(" ")[0];
+    		String name = argumentString[i].trim().split(" ")[1];
+			Argument argument = new Argument(type, name);
+			arguments.add(argument);
+		}
+    	MethodSignature myMethod = new MethodSignature(methodName, arguments);
+    	myMethod.setAccessModifier(accessModifier);
+    	myMethod.setReturnType(returnType);
+    	return myMethod;
     }
     private static boolean hasMatchingAccessModifier(String str) {
     	List<String> modifiers = Arrays.asList("public", "private", "protected");
@@ -51,5 +66,11 @@ public class MethodParser {
     		}
     	}
     	return false;
+	}
+    public static void main(String[] args) {
+    	String someString = "public void vega(int x, boolean y)";
+    	MethodParser checkMethodParser = new MethodParser();
+    	MethodSignature result = checkMethodParser.parseFunction(someString);
+    	System.out.println(result.getAccessModifier());
 	}
 }
