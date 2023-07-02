@@ -40,7 +40,7 @@ public class MethodParser {
 		} else {
 			splitedString = signatureString.split(" ", 2);
 			returnType = splitedString[0];
-			methodName = splitedString[1].split("(")[0];
+			methodName = splitedString[1].split("\\(")[0];
 			argumentsInOneString = splitedString[2].split("\\(")[1];
 		}
         String[] argumentString = argumentsInOneString.replaceAll("\\)", "").split(",");
