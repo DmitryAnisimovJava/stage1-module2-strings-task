@@ -41,14 +41,16 @@ public class MethodParser {
 			splitedString = signatureString.split(" ", 2);
 			returnType = splitedString[0];
 			methodName = splitedString[1].split("\\(")[0];
-			argumentsInOneString = splitedString[2].split("\\(")[1];
+			argumentsInOneString = splitedString[1].split("\\(")[1];
 		}
         String[] argumentString = argumentsInOneString.replaceAll("\\)", "").split(",");
         List<Argument> arguments = new ArrayList<>();
-    	for (int i = 0; i < argumentString.length - 1; i++) {
+    	for (int i = 0; i <= argumentString.length - 1; i++) {
     		String type = argumentString[i].trim().split(" ")[0];
     		String name = argumentString[i].trim().split(" ")[1];
 			Argument argument = new Argument(type, name);
+			System.out.println(argument.getName());
+			System.out.println(argument.getType());
 			arguments.add(argument);
 		}
     	MethodSignature myMethod = new MethodSignature(methodName, arguments);
@@ -64,11 +66,5 @@ public class MethodParser {
     		}
     	}
     	return false;
-	}
-    public static void main(String[] args) {
-    	String someString = "public void vega(int x, boolean y)";
-    	MethodParser checkMethodParser = new MethodParser();
-    	MethodSignature result = checkMethodParser.parseFunction(someString);
-    	System.out.println(result.getAccessModifier());
 	}
 }
