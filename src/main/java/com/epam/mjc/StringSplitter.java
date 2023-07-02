@@ -2,6 +2,7 @@ package com.epam.mjc;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 public class StringSplitter {
@@ -15,10 +16,12 @@ public class StringSplitter {
      */
     public List<String> splitByDelimiters(String source, Collection<String> delimiters) {
     	String allDelimeters = "";
-    	for(String delimiterString : delimiters) {
-    		allDelimeters = "" + delimiterString;
-    	}
+    	for (Iterator iterator = delimiters.iterator(); iterator.hasNext();) {
+			allDelimeters = allDelimeters + (String) iterator.next();
+			
+		}
     	String[] splitedSourceString = source.split(String.format("[%s]", allDelimeters));
+    	System.out.println(allDelimeters);	
     	return Arrays.asList(splitedSourceString);
 		}
     }
