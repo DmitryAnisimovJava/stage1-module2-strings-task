@@ -2,9 +2,7 @@ package com.epam.mjc;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import com.epam.mjc.MethodSignature.Argument;
 
@@ -37,15 +35,15 @@ public class MethodParser {
 			splitedString = signatureString.split(" ", 3);
 			accessModifier = splitedString[0];
 			returnType = splitedString[1];
-			methodName = splitedString[2].split("(")[0];
-			argumentsInOneString = splitedString[2].split("(")[1];
+			methodName = splitedString[2].split("\\(")[0];
+			argumentsInOneString = splitedString[2].split("\\(")[1];
 		} else {
 			splitedString = signatureString.split(" ", 2);
 			returnType = splitedString[0];
 			methodName = splitedString[1].split("(")[0];
-			argumentsInOneString = splitedString[2].split("(")[1];
+			argumentsInOneString = splitedString[2].split("\\(")[1];
 		}
-        String[] argumentString = argumentsInOneString.replaceAll(")", "").split(",");
+        String[] argumentString = argumentsInOneString.replaceAll("\\)", "").split(",");
         List<Argument> arguments = new ArrayList<>();
     	for (int i = 0; i < argumentString.length - 1; i++) {
     		String type = argumentString[i].trim().split(" ")[0];
